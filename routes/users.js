@@ -21,7 +21,7 @@ router.changePassword = (req,res) =>{
   users.findOne({user:req.body.user},function (err,user) {
     if(user == null)
       res.json({message: 'Not found'});
-    if (err)
+    else if (err)
       res.json({message: "error", errmsg: err});
     else {
       user.password = req.body.password;
@@ -40,10 +40,12 @@ router.changePassword = (req,res) =>{
 
 router.deleteUser = (req,res) =>{
   users.findOneAndRemove({user: req.body.user},function (err,user) {
-      if(err)
-        res.json({message: "error", errmsg: err});
-      else
-        res.json({message:'Delete successfully'})
+    if(err)
+      res.json({message: "error", errmsg: err});
+    else if(user == null)
+      res.json({message: "Not found"});
+    else
+      res.json({message:'Delete successfully'})
   });
 }
 
@@ -51,46 +53,57 @@ router.register = (req,res) =>{
 
   res.setHeader('Content-Type', 'application/json');
   users.findOne({user: req.body.user},function (err,user) {         // if username existed
-    console.log("aaaaaa");
+
     if(user !== null)
       res.json({message: 'Username has been register'});
-    if (err)
+    else if (err)
       res.json({message: "error", errmsg: err});
+
+    else {
+      users.findOne({email: req.body.email}, function (err, user) {        //if email existed
+        console.log("bbbbb");
+        if (user !== null)
+          res.json({message: 'Email has been register'});
+        else if (err)
+          res.json({message: "error", errmsg: err});
+
+        var user = new users();
+        user.email = req.body.email;
+        user.user = req.body.user;
+        user.password = req.body.password;
+
+
+        router.get('/', function (req, res, next) {
+          res.send('respond with a resource');
+        });
+
+        user.save(function (err) {
+          if (err)
+            res.json({message: 'register false', errmsg: err});
+          else
+            res.json({message: 'register successfully', data: user})
+        })
+      });
+    }
+
+
   });
+};
 
-  users.findOne({email: req.body.email},function (err,user) {        //if email existed
-    console.log("bbbbb");
-    if(user !== null)
-      res.json({message: 'Email has been register'});
-    if (err)
-      res.json({message: "error", errmsg: err});
-  });
 
-  var user = new users();
-  user.email = req.body.email;
-  user.user = req.body.user;
-  user.password = req.body.password;
-
-  user.save(function (err) {
-    if(err)
-      res.json({message:'register false',errmsg:err});
-    else
-      res.json({message:'register successfully',data:user})
-  })
-
-}
 
 router.login = (req,res) =>{
   if(req.body.user !== undefined) {
 
     users.findOne({user: req.body.user}, function (err, user) {
+      const pwd = req.body.password;
+      console.log(pwd+ " "+user.password);
       if(user == null)
         res.json({message: 'Not Found'});
-      if (err)
+      else if (err)
         res.json({message: "error", errmsg: err});
 
-      const pwd = req.body.password;
-      if (user.password !== pwd)
+      else if (user.password === pwd)
         res.json({message: "error password"});
       else
         res.json({message: "login successfully"});
@@ -99,13 +112,14 @@ router.login = (req,res) =>{
 
   else if(req.body.email !== undefined){
     users.findOne({email: req.body.email}, function (err, user) {
+      const pwd = req.body.password;
       if(user == null)
         res.json({message: 'Not Found'});
-      if(err)
+      else if(err)
         res.json({message: "error", errmsg: err});
-      const pwd = req.body.password;
 
-      if (user.password !== pwd)
+
+      else if (user.password !== pwd)
         res.json({message: "error password"});
       else
         res.json({message: "login successfully"});
@@ -118,13 +132,14 @@ router.login = (req,res) =>{
 
 /* GET users listing. */
 router.getUsers = (req,res) =>{
+  console.log("test");
   res.setHeader('Content-Type', 'application/json');
   users.find(function (err,users) {
-      if (err)
-        res.send(err);
+    if (err)
+      res.send(err);
 
-        res.send(JSON.stringify(users, null, 5));
-      });
+    res.send(JSON.stringify(users, null, 5));
+  });
 }
 
 router.findUserByName = (req,res) =>{
