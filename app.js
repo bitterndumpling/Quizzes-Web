@@ -33,7 +33,7 @@ app.delete('/users/:user',usersRouter.deleteUser);
 app.put('/users/pwd',usersRouter.changePassword);
 
 app.get('/quizzes',quizzes.getQuizzes);
-
+app.get('/quizzes/:id',quizzes.findOneQuiz);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

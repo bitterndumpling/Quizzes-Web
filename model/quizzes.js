@@ -7,10 +7,10 @@ let quizzesSchema = new mongoose.Schema({
         times: {type: Number, default:0},
         questions: [{
             'id': Number,
-            'type': Number,
+            'types': Number,
             'question': String,
             'answer': [String],
-            'test': String
+            'qtext': String
         }]
     },
     {collection:'quizzesdb'});
