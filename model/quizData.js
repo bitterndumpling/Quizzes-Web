@@ -1,7 +1,7 @@
 let mongoose = require('mongoose');
 
 let quizDataSave = new mongoose.Schema({
-    _id: String,
+    quizId: String,
     respondent: String,
     date: Date,
     answers:[{
