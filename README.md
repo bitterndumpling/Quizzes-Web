@@ -1,9 +1,9 @@
-#Bisic Information
+# Basic Information
 - Name: Chaochao Ding
 - Student ID: 20086445
 
 
-#Function:
+# Function:
 Total: 12 routes, 4 get, 3 post, 3 put, 2 delete for 2 models
 - Users model: 
     - Get: getUsers 
@@ -51,7 +51,7 @@ Total: 12 routes, 4 get, 3 post, 3 put, 2 delete for 2 models
     - under coding
     
 
-#Model
+# Model
 1. Users model: 
     - save users data
     - including email, user(name), password
@@ -66,12 +66,12 @@ Total: 12 routes, 4 get, 3 post, 3 put, 2 delete for 2 models
     - including quizId, respondent, date, answers
 
 
-#Persistence approach 
+# Persistence approach 
 Total 3 models with mongooDB schema
 
-#Git approach
+# Git approach
 https://github.com/bitterndumpling/Quizzes-Web
 
-#DX approach
+# DX approach
 - Repo Usage:
     - Each functions added with a Git commit
