@@ -34,6 +34,13 @@ app.put('/users/pwd',usersRouter.changePassword);
 
 app.get('/quizzes',quizzes.getQuizzes);
 app.get('/quizzes/:id',quizzes.findOneQuiz);
+app.delete('/quizzes/:id',quizzes.deleteQuiz)
+app.post('/quizzes',quizzes.addQuiz);
+app.put('/quizzes',quizzes.editQuiz);
+
+app.put('/test',quizzes.doTest);
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

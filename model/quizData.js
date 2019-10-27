@@ -5,10 +5,10 @@ let quizDataSave = new mongoose.Schema({
     respondent: String,
     date: Date,
     answers:[{
-        'id': String,
+        'id': Number,
         'answer': Number,
-        'type': Number,
-        'text': String
+        'types': Number,
+        'qtext': String
 
          }]
     },
