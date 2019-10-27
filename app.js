@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+const quizzes = require('./routes/quizzes')
 
 var app = express();
 
@@ -28,6 +29,11 @@ app.get('/users',usersRouter.getUsers);
 app.get('/users/:user',usersRouter.findUserByName);
 app.post('/users/login',usersRouter.login);
 app.post('/users/register',usersRouter.register);
+app.delete('/users/:user',usersRouter.deleteUser);
+app.put('/users/pwd',usersRouter.changePassword);
+
+app.get('/quizzes',quizzes.getQuizzes);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

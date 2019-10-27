@@ -15,22 +15,56 @@ db.once('open', function () {
   console.log('Successfully Connected to [ ' + db.name + ' ]');
 });
 
+
+router.changePassword = (req,res) =>{
+
+  users.findOne({user:req.body.user},function (err,user) {
+    if(user == null)
+      res.json({message: 'Not found'});
+    if (err)
+      res.json({message: "error", errmsg: err});
+    else {
+      user.password = req.body.password;
+      user.save(function (err) {
+        if(err)
+          res.json({message: "error", errmsg: err});
+        else
+          res.json({message:'Update successfully'})
+      })
+    }
+
+
+
+  })
+}
+
+router.deleteUser = (req,res) =>{
+  users.findOneAndRemove({user: req.body.user},function (err,user) {
+      if(err)
+        res.json({message: "error", errmsg: err});
+      else
+        res.json({message:'Delete successfully'})
+  });
+}
+
 router.register = (req,res) =>{
 
   res.setHeader('Content-Type', 'application/json');
-  users.find({user: req.body.user},function (err,user) {         // if username existed
-    if(user.length !== 0)
-      res.send({message: 'Username has been register'});
-    else if (err)
+  users.findOne({user: req.body.user},function (err,user) {         // if username existed
+    console.log("aaaaaa");
+    if(user !== null)
+      res.json({message: 'Username has been register'});
+    if (err)
       res.json({message: "error", errmsg: err});
-  })
+  });
 
-  users.find({email: req.body.email},function (err,user) {        //if email existed
-    if(user.length !== 0)
-      res.send({message: 'Email has been register'});
-    else if (err)
+  users.findOne({email: req.body.email},function (err,user) {        //if email existed
+    console.log("bbbbb");
+    if(user !== null)
+      res.json({message: 'Email has been register'});
+    if (err)
       res.json({message: "error", errmsg: err});
-  })
+  });
 
   var user = new users();
   user.email = req.body.email;
@@ -49,14 +83,14 @@ router.register = (req,res) =>{
 router.login = (req,res) =>{
   if(req.body.user !== undefined) {
 
-    users.find({user: req.body.user}, function (err, user) {
-      if(user.length === 0)
-        res.send({message: 'Not Found'});
-      else if (err)
+    users.findOne({user: req.body.user}, function (err, user) {
+      if(user == null)
+        res.json({message: 'Not Found'});
+      if (err)
         res.json({message: "error", errmsg: err});
 
       const pwd = req.body.password;
-      if (user[0].password !== pwd)
+      if (user.password !== pwd)
         res.json({message: "error password"});
       else
         res.json({message: "login successfully"});
@@ -64,14 +98,14 @@ router.login = (req,res) =>{
   }
 
   else if(req.body.email !== undefined){
-    users.find({email: req.body.email}, function (err, user) {
-      if(user.length === 0)
-        res.send({message: 'Not Found'});
-      else if(err)
+    users.findOne({email: req.body.email}, function (err, user) {
+      if(user == null)
+        res.json({message: 'Not Found'});
+      if(err)
         res.json({message: "error", errmsg: err});
       const pwd = req.body.password;
 
-      if (user[0].password !== pwd)
+      if (user.password !== pwd)
         res.json({message: "error password"});
       else
         res.json({message: "login successfully"});
@@ -95,9 +129,8 @@ router.getUsers = (req,res) =>{
 
 router.findUserByName = (req,res) =>{
   res.setHeader('Content-Type', 'application/json');
-  users.find({user:req.params.user},function (err,user) {
-    if(user.length === 0)
-      res.send({message: 'Not Found'});
+  users.findOne({user:req.params.user},function (err,user) {
+
     if(err)
       res.send(err);
 
