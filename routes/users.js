@@ -30,9 +30,9 @@ router.changePassword = (req,res) =>{
 }
 
 router.deleteUser = (req,res) =>{
-  users.findOneAndRemove({user: req.body.user},function (err,user) {
+  users.findOneAndRemove({user: req.params.user},function (err,user) {
     if(err)
-      res.json({message: "error", errmsg: err});
+      res.json({message: "Not found", errmsg: err});
     else if(user == null)
       res.json({message: "Not found"});
     else
@@ -136,11 +136,10 @@ router.getUsers = (req,res) =>{
 router.findUserByName = (req,res) =>{
   res.setHeader('Content-Type', 'application/json');
   users.findOne({user:req.params.user},function (err,user) {
-
     if(err)
-      res.send(err);
-
-    res.send(JSON.stringify(user, null, 5));
+      res.json({message:"Not found", errmsg: err});
+    else
+      res.send(JSON.stringify(user, null, 5));
   })
 }
 

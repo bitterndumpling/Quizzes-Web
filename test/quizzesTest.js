@@ -130,11 +130,11 @@ describe('Quizzes', () => {
                         done(err);
                     })
             });
-        })
+        });
         describe("if id is invaild",()=>{
             it('should return a wrong message', done=> {
                 request(server)
-                    .get('/quizzes/adsfsaf')
+                    .get("/quizzes/'adsfsaf'")
                     .set("Accept","application/json")
                     .expect("Content-Type", /json/)
                     .expect(200)

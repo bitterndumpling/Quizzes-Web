@@ -86,8 +86,8 @@ router.findOneQuiz = (req,res) =>{
 
         if(err)
             res.json({message:"Not found", errmsg: err});
-
-        res.send(JSON.stringify(quiz, null, 5));
+        else
+            res.send(JSON.stringify(quiz, null, 5));
     })
 }
 

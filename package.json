@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "NODE_ENV=dev && node bin/www",
-    "test": "mocha test/quizzesTest.js --timeout 5000 --exit"
+    "test": "mocha test/usersTest.js --timeout 5000 --exit"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
