@@ -13,5 +13,5 @@ let quizzesSchema = new mongoose.Schema({
             'qtext': String
         }]
     },
-    {collection:'quizzesdb'});
+    {collection:'quizzes'});
 module.exports = mongoose.model('Quizzes', quizzesSchema);

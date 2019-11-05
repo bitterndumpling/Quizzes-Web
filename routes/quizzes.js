@@ -1,21 +1,11 @@
 let experss = require('express');
 let router = experss.Router();
-let mongoose = require('mongoose');
+//let mongoose = require('mongoose');
 let quizzes = require('../model/quizzes');
+let db = require("./connectdb");
 
 
 
-mongoose.connect('mongodb://localhost:27017/quizzesdb');
-
-let db = mongoose.connection;
-
-db.on('error', function (err) {
-    console.log('Unable to Connect to [ ' + db.name + ' ]', err);
-});
-
-db.once('open', function () {
-    console.log('Successfully Connected to [ ' + db.name + ' ]');
-});
 
 router.deleteQuiz = (req,res) =>{
     quizzes.findByIdAndRemove(req.params.id,function (err) {
@@ -89,7 +79,7 @@ router.findOneQuiz = (req,res) =>{
     quizzes.findById(req.params.id,function (err,quiz) {
 
         if(err)
-            res.send(err);
+            res.json({message:"Not found", errmsg: err});
 
         res.send(JSON.stringify(quiz, null, 5));
     })

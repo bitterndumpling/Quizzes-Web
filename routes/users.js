@@ -1,19 +1,10 @@
 var express = require('express');
 var router = express.Router();
-let mongoose = require('mongoose');
+//let mongoose = require('mongoose');
 let users = require('../model/users');
+let db = require("./connectdb");
 
-mongoose.connect('mongodb://localhost:27017/usersdb');
 
-let db = mongoose.connection;
-
-db.on('error', function (err) {
-  console.log('Unable to Connect to [ ' + db.name + ' ]', err);
-});
-
-db.once('open', function () {
-  console.log('Successfully Connected to [ ' + db.name + ' ]');
-});
 
 
 router.changePassword = (req,res) =>{
@@ -67,21 +58,21 @@ router.register = (req,res) =>{
         else if (err)
           res.json({message: "error", errmsg: err});
 
-        var user = new users();
-        user.email = req.body.email;
-        user.user = req.body.user;
-        user.password = req.body.password;
+        let user2= new users();
+        user2.email = req.body.email;
+        user2.user = req.body.user;
+        user2.password = req.body.password;
 
 
         router.get('/', function (req, res, next) {
           res.send('respond with a resource');
         });
 
-        user.save(function (err) {
+        user2.save(function (err) {
           if (err)
             res.json({message: 'register false', errmsg: err});
           else
-            res.json({message: 'register successfully', data: user})
+            res.json({message: 'register successfully', data: user2})
         })
       });
     }

@@ -75,3 +75,6 @@ https://github.com/bitterndumpling/Quizzes-Web
 # DX approach
 - Repo Usage:
     - Each functions added with a Git commit
+
+# yutuber
+https://www.youtube.com/channel/UCOrsBPyw9S3GYdUPudutcfA?view_as=subscriber

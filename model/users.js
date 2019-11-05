@@ -5,7 +5,7 @@ let usersSchema = new mongoose.Schema({
     email: String,
     user: String,
     password: String
-    },{collection:'usersdb'});
+    },{collection:'users'});
 
 
 module.exports = mongoose.model('Users',usersSchema);
