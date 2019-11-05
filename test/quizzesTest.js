@@ -114,6 +114,9 @@ describe('Quizzes', () => {
         });
     });
 
+
+
+
     describe("GET /quizzes/:id",()=>{
         describe("if id is vaild",()=>{
             it('should return the matching quiz', done => {
@@ -142,6 +145,56 @@ describe('Quizzes', () => {
             });
         })
     });
+
+
+    describe("PUT /quizzes",()=>{
+        describe("if edit information is vaild",()=>{
+            it('should return a message and edit the quiz', ()=> {
+                const msg={
+                    "_id": validID,
+                    "title": "Web Quiz7",
+                    "creator": "D",
+                    "date": "2019-10-26",
+                    "times": 0,
+                    "questions": [{
+                        "id": 1,
+                        "types": 0,
+                        "question": "Is that ok?",
+                        "answer": ["yes","no","no idea"],
+                        "qtext":""
+                    },
+                        {
+                            "id": 2,
+                            "types": 0,
+                            "question": "Do you like this website?",
+                            "answer": ["yes","no","no idea"],
+                            "qtext":""
+                        }]
+                };
+                request(server)
+                    .put('/quizzes')
+                    .send(msg)
+                    .expect(200)
+                    .then(res => {
+                        expect(res.body.message).equals("Edit successfully");
+                        validID = res.body.data._id;
+                    });
+            });
+            after(() => {
+                request(server)
+                    .get(`/quizzes/${validID}`)
+                    .expect(200)
+                    .then(res => {
+                        expect(res.body).to.have.property("title", "Web Quiz7");
+                    });
+            });
+        });
+
+    });
+
+
+
+
 
 
     describe("POST /quizzes",()=>{
@@ -183,8 +236,11 @@ describe('Quizzes', () => {
                         expect(res.body).to.have.property("times", 0);
                     });
             });
-
     });
+
+
+
+
 
     describe("DELETE quizzes/:id",() =>{
         describe("when the id is vaild",()=>{
