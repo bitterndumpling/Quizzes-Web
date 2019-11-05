@@ -50,7 +50,7 @@ describe('Quizzes', () => {
                 "title": "Web Quiz3",
                 "creator": "D",
                 "date": "2019-10-26",
-                "times": 0,
+                "times": 11,
                 "questions": [{
                     "id": 1,
                     "types": 0,
@@ -144,7 +144,85 @@ describe('Quizzes', () => {
     });
 
 
+    describe("POST /quizzes",()=>{
+            it('should return a successful message', () => {
+                const quiz = {
+                    "title": "Web Quiz5",
+                    "creator": "D",
+                    "date": "2019-10-26",
+                    "questions": [{
+                        "id": 1,
+                        "types": 0,
+                        "question": "Do you like this website?",
+                        "answer": ["yes","no","no idea"],
+                        "qtext":""
+                    },
+                        {
+                            "id": 2,
+                            "types": 0,
+                            "question": "Do you like this website?",
+                            "answer": ["yes","no","no idea"],
+                            "qtext":""
+                        }]
+                };
+                return request(server)
+                    .post("/quizzes")
+                    .send(quiz)
+                    .expect(200)
+                    .then(res => {
+                      expect(res.body.message).equals("Added successfully");
+                      validID = res.body.data._id;
+                    });
+            });
+            after(() => {
+                return request(server)
+                    .get(`/quizzes/${validID}`)
+                    .expect(200)
+                    .then(res => {
+                        expect(res.body).to.have.property("title", "Web Quiz5");
+                        expect(res.body).to.have.property("times", 0);
+                    });
+            });
+
+    });
+
     
+
+
+    describe("PUT /test/:id", () => {
+        describe("when the id is valid", () => {
+            it("should return a message and the times add 1", () => {
+                return request(server)
+                    .put(`/test/${validID}`)
+                    .expect(200)
+                    .then(resp => {
+                        expect(resp.body).to.include({
+                            message: "Someone finished testing"
+                        });
+                        expect(resp.body.data).to.have.property("times", 12);
+                    });
+            });
+            after(() => {
+                return request(server)
+                    .get(`/quizzes/${validID}`)
+                    .set("Accept", "application/json")
+                    .expect(200)
+                    .then(resp => {
+                        expect(resp.body).to.have.property("times", 12);
+                    });
+            });
+        });
+        describe("when the id is invalid", () => {
+            it("should return a 404", () => {
+                return request(server)
+                    .put("/test/sadjfasjl")
+                    .expect(404);
+            });
+        });
+    });
+
+
+
 
 
 

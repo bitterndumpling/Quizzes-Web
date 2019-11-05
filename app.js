@@ -38,7 +38,7 @@ app.delete('/quizzes/:id',quizzes.deleteQuiz)
 app.post('/quizzes',quizzes.addQuiz);
 app.put('/quizzes',quizzes.editQuiz);
 
-app.put('/test',quizzes.doTest);
+app.put('/test/:id',quizzes.doTest);
 
 
 

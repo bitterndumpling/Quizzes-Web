@@ -51,15 +51,21 @@ router.editQuiz = (req,res)=>{
 }
 
 router.doTest = (req,res) =>{
-    console.log(req.body.quizId);
-    quizzes.findById(req.body.quizId,function (err,quiz) {
-        quiz.times += 1;
-        quiz.save(function (err) {
-            if(err)
-                res.json({message:'Test false',errmsg:err});
-            else
-                res.json({message:'Someone finished testing'})
-        })
+    res.setHeader('Content-Type', 'application/json');
+    quizzes.findById(req.params.id,function (err,quiz) {
+        if(quiz === undefined) {
+            res.status(404);
+            res.json({message: "Not found"});
+        }
+        else {
+            quiz.times += 1;
+            quiz.save(function (err) {
+                if (err)
+                    res.json({message: 'Test false', errmsg: err});
+                else
+                    res.json({message: 'Someone finished testing', data: quiz})
+            })
+        }
     })
 }
 
