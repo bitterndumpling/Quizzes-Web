@@ -186,7 +186,40 @@ describe('Quizzes', () => {
 
     });
 
-    
+    describe("DELETE quizzes/:id",() =>{
+        describe("when the id is vaild",()=>{
+            it('should return a message and delete the quiz', () => {
+                return request(server)
+                    .delete(`/quizzes/${validID}`)
+                    .set("Accept", "application/json")
+                    .expect("Content-Type", /json/)
+                    .expect(200)
+                    .then(res =>{
+                        expect(res.body.message).equals("Quiz Deleted!");
+                    })
+            });
+            after(() => {
+                return request(server)
+                    .get(`/quizzes/${validID}`)
+                    .set("Accept", "application/json")
+                    .expect(200)
+                    .then(resp => {
+                        expect(resp.body).to.be.null;
+                    });
+            });
+        });
+        describe("when the id is invaild",()=>{
+            it('should return a wrong message', done=> {
+                request(server)
+                    .delete(`/quizzes/dafsadfsa`)
+                    .expect(200)
+                    .end((err,res) =>{
+                        expect(res.body.message).equals("Quiz NOT Deleted!");
+                        done(err);
+                    })
+            });
+        })
+    });
 
 
     describe("PUT /test/:id", () => {
